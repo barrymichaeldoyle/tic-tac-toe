@@ -27,13 +27,13 @@ const useRoom = (id: string): Output => {
       .onSnapshot((doc) => {
         if (doc.exists) setRoom(doc.data() as Room)
         else console.log('Room Not Found')
-        setIsFetching(false)
+        if (isFetching) setIsFetching(false)
       })
 
     return () => {
       unsubscribe()
     }
-  }, [id])
+  }, [id, isFetching])
 
   return { isFetching, room }
 }
