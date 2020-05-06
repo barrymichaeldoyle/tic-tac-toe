@@ -1,12 +1,15 @@
 import React, { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
 
-import App from 'App'
+import Routes from 'routes'
 import { unregister } from 'core'
 
 ReactDOM.render(
   <StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes />
+    </BrowserRouter>
   </StrictMode>,
   document.getElementById('root')
 )

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 import { checkBoard } from 'helpers'
 import { Block, Button, Container, Row } from 'styles'
@@ -6,7 +7,8 @@ import { Block, Button, Container, Row } from 'styles'
 export type SYMBOL = 'x' | 'o'
 export type BLOCK = SYMBOL | '-'
 
-const App = () => {
+const Room = () => {
+  const { id } = useParams()
   const [board, setBoard] = useState<BLOCK[]>([
     '-',
     '-',
@@ -71,6 +73,7 @@ const App = () => {
 
   return (
     <Container>
+      <h1>{id}</h1>
       <h3>{message}</h3>
       <Row>
         <Block onClick={() => handleClick(0)}>
@@ -110,4 +113,4 @@ const App = () => {
   )
 }
 
-export default App
+export default Room
