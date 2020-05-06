@@ -1,8 +1,7 @@
-import { BLOCK } from 'App'
 import { checkWin } from 'helpers'
 
 interface Input {
-  newBoard: BLOCK[]
+  newBoard: any[]
   isXTurn: boolean
   turnNumber: number
 }
