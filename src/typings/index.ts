@@ -6,5 +6,6 @@ export interface Room {
   isGameDone: boolean
   message: string
   playerTurn: SYMBOL
+  startingTurn: SYMBOL
   turnNumber: number
 }

@@ -7,7 +7,7 @@ const Room = lazy(() => import('pages/room'))
 const Routes = () => (
   <Switch>
     <Suspense fallback={<h1>Loading Page...</h1>}>
-      <Route path="/room/:id" component={Room} />
+      <Route path="/room/:roomId" component={Room} />
       <Route exact path="/" component={Home} />
     </Suspense>
   </Switch>

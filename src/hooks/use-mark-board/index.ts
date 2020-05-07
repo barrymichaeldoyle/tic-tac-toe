@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 import { db } from 'services'
 import { Room } from 'typings'
@@ -10,7 +11,8 @@ interface Output {
   markBoard: (boardIndex: number, room: Room) => void
 }
 
-const useMarkBoard = (roomId: string): Output => {
+const useMarkBoard = (): Output => {
+  const { roomId } = useParams()
   const [isMarking, setIsMarking] = useState<boolean>(false)
 
   async function markBoard(boardIndex: number, room: Room) {
