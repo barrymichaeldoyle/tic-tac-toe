@@ -1,4 +1,4 @@
-import { BLOCK, SYMBOL } from 'pages/room'
+import { BLOCK, SYMBOL } from 'typings'
 
 export default function checkWin(board: BLOCK[], sym: SYMBOL): boolean {
   if (
