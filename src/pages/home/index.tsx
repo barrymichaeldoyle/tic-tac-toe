@@ -1,6 +1,8 @@
 import React, { FC } from 'react'
 import { useHistory } from 'react-router-dom'
 
+import { Button, H1 } from 'components'
+
 const Home: FC = () => {
   const history = useHistory()
 
@@ -10,8 +12,8 @@ const Home: FC = () => {
 
   return (
     <>
-      <h1>Home Page</h1>
-      <button onClick={handleClick}>Go to Game Room</button>
+      <H1>Home Page</H1>
+      <Button onClick={handleClick}>Go to Game Room</Button>
     </>
   )
 }
