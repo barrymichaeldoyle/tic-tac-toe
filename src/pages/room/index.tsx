@@ -5,9 +5,6 @@ import { useClearBoard, useMarkBoard, useRoom } from 'hooks'
 
 import { Block, Container, Grid, Row } from './styles'
 
-export type SYMBOL = 'x' | 'o'
-export type BLOCK = SYMBOL | '-'
-
 const Room = () => {
   const { clearBoard, isClearing } = useClearBoard()
   const { isMarking, markBoard } = useMarkBoard()
@@ -28,7 +25,7 @@ const Room = () => {
 
   return (
     <Container>
-      <h3>{message}</h3>
+      <H1>{message}</H1>
       <Grid marking={isMarking}>
         <Row>
           <Block onClick={() => handleClick(0)}>{board[0]}</Block>
