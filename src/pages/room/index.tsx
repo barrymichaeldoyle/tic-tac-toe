@@ -1,30 +1,42 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Button, H1 } from 'components'
-import { useClearBoard, useMarkBoard, useRoom } from 'hooks'
+import { useClearBoard, useCountdown, useMarkBoard, useRoom } from 'hooks'
 
 import { Block, Container, Grid, Row } from './styles'
 
 const Room = () => {
+  const { counter, setCounter } = useCountdown(5)
   const { clearBoard, isClearing } = useClearBoard()
   const { isMarking, markBoard } = useMarkBoard()
   const { isFetching, room } = useRoom()
+
+  useEffect(() => {
+    if (counter === 0) console.log('Timer hit 0!')
+  }, [counter])
 
   if (isFetching) return <H1>Loading Room...</H1>
   if (!room) return <h1>Room Not Found</h1>
 
   const { board, isGameDone, message, startingTurn } = room
 
-  function handleClick(index: number) {
-    if (!isMarking && !board[index] && !isGameDone) markBoard(index, room!)
+  async function handleClick(index: number) {
+    if (!isMarking && !board[index] && !isGameDone) {
+      await markBoard(index, room!)
+      setCounter(10)
+    }
   }
 
-  function handleClear() {
-    clearBoard(startingTurn)
+  async function handleClear() {
+    await clearBoard(startingTurn)
+    setCounter(10)
   }
 
   return (
     <Container>
+      <H1>
+        Timer: {counter} second{counter === 1 ? '' : 's'}
+      </H1>
       <H1>{message}</H1>
       <Grid marking={isMarking}>
         <Row>
