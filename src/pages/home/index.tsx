@@ -2,11 +2,11 @@ import React, { FC } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { Button, H1, Logout } from 'components'
-import { useUser } from 'hooks'
+import { useCurrentUser } from 'hooks'
 
 const Home: FC = () => {
   const history = useHistory()
-  const user = useUser()
+  const user = useCurrentUser()
 
   function goToGameRoom() {
     history.push('/room/AAAA')
@@ -14,6 +14,10 @@ const Home: FC = () => {
 
   function goToLogin() {
     history.push('/login')
+  }
+
+  function goToProfile() {
+    history.push(`/u/${user!.uid}`)
   }
 
   function goToSignup() {
@@ -25,7 +29,10 @@ const Home: FC = () => {
       <H1>Home Page</H1>
       <Button onClick={goToGameRoom}>Go to Game Room</Button>
       {user ? (
-        <Logout />
+        <>
+          <Button onClick={goToProfile}>Profile</Button>
+          <Logout />
+        </>
       ) : (
         <>
           <Button onClick={goToLogin}>Login</Button>

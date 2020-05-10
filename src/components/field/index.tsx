@@ -5,6 +5,7 @@ import { Error } from 'components'
 import { Container, Input, Label } from './styles'
 
 interface IProps {
+  disabled?: boolean
   errMessage?: string
   id: string
   label: string

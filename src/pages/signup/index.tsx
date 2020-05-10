@@ -1,14 +1,14 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import { Button, Error, Field, H1 } from 'components'
+import { Button, Error as ErrComponent, Field, H1 } from 'components'
 import { validateEmail } from 'helpers'
-import { useUser } from 'hooks'
-import { auth } from 'services'
+import { useCurrentUser } from 'hooks'
+import { auth, db } from 'services'
 
 const SignupPage: FC = () => {
   const history = useHistory()
-  const user = useUser()
+  const user = useCurrentUser()
   const [email, setEmail] = useState('')
   const [emailErr, setEmailErr] = useState<string | undefined>()
   const [password, setPassword] = useState('')
@@ -46,13 +46,25 @@ const SignupPage: FC = () => {
 
     setIsSigningUp(true)
 
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => setIsSigningUp(false))
-      .catch((err) => {
-        setFirebaseErr(err.message)
-        setIsSigningUp(false)
-      })
+    try {
+      const response = await auth.createUserWithEmailAndPassword(
+        email,
+        password
+      )
+
+      if (!response.user) throw new Error('Something went wrong!')
+
+      await db
+        .collection('users')
+        .doc(response.user.uid)
+        .set({
+          displayName: response.user.email?.split('@')[0] ?? '<UNKNOWN>',
+        })
+    } catch (ex) {
+      setFirebaseErr(ex.message)
+    } finally {
+      setIsSigningUp(false)
+    }
   }
 
   function goToLogin() {
@@ -93,7 +105,7 @@ const SignupPage: FC = () => {
         type="password"
         value={confirmPassword}
       />
-      {firebaseErr && <Error>{firebaseErr}</Error>}
+      {firebaseErr && <ErrComponent>{firebaseErr}</ErrComponent>}
       <Button disabled={isSigningUp} onClick={handleSignup}>
         Sign{isSigningUp ? 'ing' : ''} Up
       </Button>

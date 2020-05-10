@@ -11,7 +11,7 @@ interface Output {
 
 const useClearBoard = (): Output => {
   const { roomId } = useParams()
-  const [isClearing, setIsClearing] = useState<boolean>(false)
+  const [isClearing, setIsClearing] = useState(false)
 
   async function clearBoard(startingTurn: SYMBOL) {
     setIsClearing(true)
@@ -30,9 +30,9 @@ const useClearBoard = (): Output => {
         })
     } catch (err) {
       console.error(err)
+    } finally {
+      setIsClearing(false)
     }
-
-    setIsClearing(false)
   }
 
   return { clearBoard, isClearing }

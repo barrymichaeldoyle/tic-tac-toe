@@ -3,12 +3,12 @@ import { useHistory } from 'react-router-dom'
 
 import { Button, Error, H1, Field } from 'components'
 import { validateEmail } from 'helpers'
-import { useUser } from 'hooks'
+import { useCurrentUser } from 'hooks'
 import { auth } from 'services'
 
 const LoginPage: FC = () => {
   const history = useHistory()
-  const user = useUser()
+  const user = useCurrentUser()
   const [email, setEmail] = useState('')
   const [emailErr, setEmailErr] = useState<string | undefined>()
   const [password, setPassword] = useState('')

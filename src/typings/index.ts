@@ -9,3 +9,7 @@ export interface Room {
   startingTurn: SYMBOL
   turnNumber: number
 }
+
+export interface User {
+  displayName: string
+}
