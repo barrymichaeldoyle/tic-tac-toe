@@ -1,11 +1,14 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import { Button, Field, H1 } from 'components'
+import { Button, Error, Field, H1 } from 'components'
 import { validateEmail } from 'helpers'
+import { useUser } from 'hooks'
+import { auth } from 'services'
 
 const SignupPage: FC = () => {
   const history = useHistory()
+  const user = useUser()
   const [email, setEmail] = useState('')
   const [emailErr, setEmailErr] = useState<string | undefined>()
   const [password, setPassword] = useState('')
@@ -14,14 +17,21 @@ const SignupPage: FC = () => {
   const [confirmPasswordErr, setConfirmPasswordErr] = useState<
     string | undefined
   >()
+  const [firebaseErr, setFirebaseErr] = useState<string | undefined>()
+  const [isSigningUp, setIsSigningUp] = useState(false)
+
+  useEffect(() => {
+    if (user) history.push('/')
+  }, [history, user])
 
   useEffect(() => {
     setEmailErr(undefined)
     setPasswordErr(undefined)
     setConfirmPasswordErr(undefined)
+    setFirebaseErr(undefined)
   }, [email, password, confirmPassword])
 
-  function handleSignup() {
+  async function handleSignup() {
     if (email.length === 0) return setEmailErr('Email is required!')
     if (!validateEmail(email)) return setEmailErr('Email must be valid!')
     if (password.length === 0) return setPasswordErr('Password is required!')
@@ -34,7 +44,15 @@ const SignupPage: FC = () => {
       return setConfirmPasswordErr('Passwords must match!')
     }
 
-    alert('SIGN IN!')
+    setIsSigningUp(true)
+
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => setIsSigningUp(false))
+      .catch((err) => {
+        setFirebaseErr(err.message)
+        setIsSigningUp(false)
+      })
   }
 
   function goToLogin() {
@@ -75,7 +93,10 @@ const SignupPage: FC = () => {
         type="password"
         value={confirmPassword}
       />
-      <Button onClick={handleSignup}>Signup</Button>
+      {firebaseErr && <Error>{firebaseErr}</Error>}
+      <Button disabled={isSigningUp} onClick={handleSignup}>
+        Sign{isSigningUp ? 'ing' : ''} Up
+      </Button>
       <Button onClick={goToLogin}>Login Instead</Button>
       <Button onClick={goBack}>Back To Home</Button>
     </>

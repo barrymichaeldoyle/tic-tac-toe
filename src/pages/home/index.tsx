@@ -1,10 +1,12 @@
 import React, { FC } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import { Button, H1 } from 'components'
+import { Button, H1, Logout } from 'components'
+import { useUser } from 'hooks'
 
 const Home: FC = () => {
   const history = useHistory()
+  const user = useUser()
 
   function goToGameRoom() {
     history.push('/room/AAAA')
@@ -22,8 +24,14 @@ const Home: FC = () => {
     <>
       <H1>Home Page</H1>
       <Button onClick={goToGameRoom}>Go to Game Room</Button>
-      <Button onClick={goToLogin}>Login</Button>
-      <Button onClick={goToSignup}>Signup</Button>
+      {user ? (
+        <Logout />
+      ) : (
+        <>
+          <Button onClick={goToLogin}>Login</Button>
+          <Button onClick={goToSignup}>Signup</Button>
+        </>
+      )}
     </>
   )
 }

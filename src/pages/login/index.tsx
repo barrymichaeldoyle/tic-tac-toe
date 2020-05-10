@@ -1,15 +1,24 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import { Button, H1, Field } from 'components'
+import { Button, Error, H1, Field } from 'components'
 import { validateEmail } from 'helpers'
+import { useUser } from 'hooks'
+import { auth } from 'services'
 
 const LoginPage: FC = () => {
   const history = useHistory()
+  const user = useUser()
   const [email, setEmail] = useState('')
   const [emailErr, setEmailErr] = useState<string | undefined>()
   const [password, setPassword] = useState('')
   const [passwordErr, setPasswordErr] = useState<string | undefined>()
+  const [firebaseErr, setFirebaseErr] = useState<string | undefined>()
+  const [isLoggingIn, setIsLoggingIn] = useState(false)
+
+  useEffect(() => {
+    if (user) history.push('/')
+  }, [history, user])
 
   useEffect(() => {
     setEmailErr(undefined)
@@ -20,6 +29,16 @@ const LoginPage: FC = () => {
     if (email.length === 0) return setEmailErr('Email is required!')
     if (!validateEmail(email)) return setEmailErr('Email must be valid!')
     if (password.length === 0) return setPasswordErr('Password is required!')
+
+    setIsLoggingIn(true)
+
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then(() => setIsLoggingIn(false))
+      .catch((err) => {
+        setFirebaseErr(err.message)
+        setIsLoggingIn(false)
+      })
   }
 
   function goToSignup() {
@@ -51,7 +70,10 @@ const LoginPage: FC = () => {
         type="password"
         value={password}
       />
-      <Button onClick={handleLogin}>Login</Button>
+      {firebaseErr && <Error>{firebaseErr}</Error>}
+      <Button disabled={isLoggingIn} onClick={handleLogin}>
+        Log{isLoggingIn ? 'ging' : ''} In
+      </Button>
       <Button onClick={goToSignup}>Signup Instead</Button>
       <Button onClick={goBack}>Back To Home</Button>
     </>

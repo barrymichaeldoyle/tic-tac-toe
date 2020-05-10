@@ -1,6 +1,8 @@
 import React, { FC, ChangeEvent } from 'react'
 
-import { Container, Error, Input, Label } from './styles'
+import { Error } from 'components'
+
+import { Container, Input, Label } from './styles'
 
 interface IProps {
   errMessage?: string
