@@ -1,0 +1,7 @@
+Step 1: Allow logged in user to create a room
+Step 1.1: Make room owner
+Step 2: List All created Rooms
+Step 3: Join a created room
+Step 4: Allow player to claim X or O spot (e.g. playerX = userId)
+
+Step 5: Rule the world...

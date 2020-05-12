@@ -2,14 +2,15 @@ import React, { FC } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { Button, H1, Logout } from 'components'
-import { useCurrentUser } from 'hooks'
+import { useCreateRoom, useCurrentUser } from 'hooks'
 
 const Home: FC = () => {
   const history = useHistory()
   const user = useCurrentUser()
+  const { createRoom, isCreatingRoom } = useCreateRoom()
 
   function goToGameRoom() {
-    history.push('/room/AAAA')
+    history.push('/r/AAAA')
   }
 
   function goToLogin() {
@@ -24,12 +25,20 @@ const Home: FC = () => {
     history.push('/signup')
   }
 
+  async function handleCreateRoom() {
+    const roomId = await createRoom()
+    history.push(`/r/${roomId}`)
+  }
+
   return (
     <>
       <H1>Home Page</H1>
       <Button onClick={goToGameRoom}>Go to Game Room</Button>
       {user ? (
         <>
+          <Button disabled={isCreatingRoom} onClick={handleCreateRoom}>
+            Creat{isCreatingRoom ? 'ing' : 'e'} Room
+          </Button>
           <Button onClick={goToProfile}>Profile</Button>
           <Logout />
         </>
