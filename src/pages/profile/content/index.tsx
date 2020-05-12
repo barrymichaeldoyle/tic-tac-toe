@@ -17,8 +17,8 @@ const Content: FC<{ user: User }> = ({ user }) => {
   ])
 
   useEffect(() => {
-    if (user.displayName !== displayName) setDisplayName(user.displayName)
-  }, [displayName, user])
+    setDisplayName(user.displayName)
+  }, [user])
 
   function handleUpdate() {
     if (isCurrentUser) updateProfile(displayName)
