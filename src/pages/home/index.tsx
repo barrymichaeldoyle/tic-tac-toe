@@ -9,8 +9,8 @@ const Home: FC = () => {
   const user = useCurrentUser()
   const { createRoom, isCreatingRoom } = useCreateRoom()
 
-  function goToGameRoom() {
-    history.push('/r/AAAA')
+  function goToJoinRoom() {
+    history.push('/r')
   }
 
   function goToLogin() {
@@ -33,7 +33,7 @@ const Home: FC = () => {
   return (
     <>
       <H1>Home Page</H1>
-      <Button onClick={goToGameRoom}>Go to Game Room</Button>
+      <Button onClick={goToJoinRoom}>Join Room</Button>
       {user ? (
         <>
           <Button disabled={isCreatingRoom} onClick={handleCreateRoom}>
