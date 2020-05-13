@@ -18,7 +18,7 @@ const Home: FC = () => {
   }
 
   function goToProfile() {
-    history.push(`/u/${user!.uid}`)
+    history.push(`/u/${user!.id}`)
   }
 
   function goToSignup() {

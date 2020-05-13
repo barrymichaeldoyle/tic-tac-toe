@@ -1,13 +1,24 @@
-import React, { createContext, FC, useContext, useState } from 'react'
+import React, {
+  createContext,
+  FC,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 
+import { useUser } from 'hooks'
 import { auth } from 'services'
+import { User } from 'typings'
 
-const CurrentUserContext = createContext<firebase.User | null>(null)
+const CurrentUserContext = createContext<User | undefined>(undefined)
 
 export const CurrentUserProvider: FC = ({ children }) => {
-  const [user, setUser] = useState<firebase.User | null>(null)
+  const [userId, setUserId] = useState<string | undefined>(undefined)
+  const { user } = useUser(userId)
 
-  auth.onAuthStateChanged(setUser)
+  auth.onAuthStateChanged((u) => setUserId(u?.uid))
+
+  useEffect(() => {}, [userId])
 
   return (
     <CurrentUserContext.Provider value={user}>

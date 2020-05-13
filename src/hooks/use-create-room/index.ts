@@ -27,7 +27,7 @@ const useCreateRoom = (): Output => {
     let output: string | undefined = undefined
 
     try {
-      const userDetails = await db.collection('users').doc(user.uid).get()
+      const userDetails = await db.collection('users').doc(user.id).get()
       if (userDetails.data()?.roomId) {
         return (output = userDetails.data()?.roomId)
       }
@@ -49,15 +49,12 @@ const useCreateRoom = (): Output => {
           board: [null, null, null, null, null, null, null, null, null],
           isGameDone: false,
           message: `${startingTurn}'s Turn`,
-          owner: user.uid,
+          owner: user.id,
           playerTurn: startingTurn,
           startingTurn: startingTurn,
           turnNumber: 1,
         })
-      await db
-        .collection('users')
-        .doc(user.uid)
-        .update({ roomId: randomRoomId })
+      await db.collection('users').doc(user.id).update({ roomId: randomRoomId })
 
       output = randomRoomId
     } catch (err) {

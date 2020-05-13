@@ -14,4 +14,5 @@ export interface Room {
 
 export interface User {
   displayName: string
+  id: string
 }

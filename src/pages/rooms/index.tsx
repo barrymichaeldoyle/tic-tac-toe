@@ -10,7 +10,7 @@ import { useRooms } from 'hooks'
 // BONUS: Implement Highlighter
 
 const Rooms: FC = () => {
-  const history = useHistory() // TODO: move to individual rom component
+  const history = useHistory()
   const { isFetching, rooms } = useRooms()
 
   if (isFetching) return <H1>Fetching Rooms...</H1>
@@ -29,7 +29,6 @@ const Rooms: FC = () => {
       ) => (
         <div key={room.id} onClick={() => history.push(`/r/${room.id}`)}>
           <H3>
-            {' '}
             {room.id} = {room.owner}
           </H3>
         </div>
