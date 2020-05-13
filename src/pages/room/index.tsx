@@ -15,7 +15,14 @@ const Room = () => {
   if (isFetching) return <H1>Loading Room...</H1>
   if (!room) return <H1>Room Not Found</H1>
 
-  const { board, isGameDone, message, startingTurn } = room
+  const {
+    board,
+    isGameDone,
+    message,
+    playerOId,
+    playerXId,
+    startingTurn,
+  } = room
 
   async function handleClick(index: number) {
     if (!isMarking && !board[index] && !isGameDone)
@@ -50,6 +57,14 @@ const Room = () => {
           <Block onClick={() => handleClick(8)}>{board[8]}</Block>
         </Row>
       </Grid>
+      <p>
+        <strong>Player X:</strong>&nbsp;
+        {playerXId ? <span>Barry</span> : <span>Join</span>}
+      </p>
+      <p>
+        <strong>Player O:</strong>&nbsp;
+        {playerOId ? <span>Kevin</span> : <span>Join</span>}
+      </p>
       <Button disabled={isClearing} onClick={handleClear}>
         Clear{isClearing ? 'ing' : ''} Board
       </Button>

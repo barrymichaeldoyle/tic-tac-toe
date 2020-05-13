@@ -5,7 +5,9 @@ export interface Room {
   board: Array<SYMBOL | null>
   isGameDone: boolean
   message: string
+  playerOId?: string
   playerTurn: SYMBOL
+  playerXId?: string
   startingTurn: SYMBOL
   turnNumber: number
 }
