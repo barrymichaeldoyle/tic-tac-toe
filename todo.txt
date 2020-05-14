@@ -1,15 +1,7 @@
-Step 1: Allow logged in user to create a room
-Step 1.1: Make room owner
-Step 2: List All created Rooms
-Step 3: Join a created room
+KEVIN!!!!!!
 
-
-
-
-Step 4: Allow player to claim X or O spot (e.g. playerX = userId)
-
-
-
-
-
-Step 5: Rule the world...
+pages/rooms cleanup (change rooms to room-list, then mvoe room into it's own component)
+Make sure user can't claim both X and O spots
+Make useSearchParams hook
+In useCreateRoom, if user already has roomID, check if the room exists, if not, create it.
+Login, fix if search params aren't there

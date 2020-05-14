@@ -38,7 +38,9 @@ const LoginPage: FC = () => {
 
     try {
       await auth.signInWithEmailAndPassword(email, password)
-      history.push(`/${redirect}?player=${player}`)
+      // TODO: if redirect doesn't exist, just go to /
+      // If  player doesn't exist go to /${redirect}
+      return history.push(`/${redirect}?player=${player}`)
     } catch (err) {
       setFirebaseErr(err.message)
       setIsLoggingIn(false)
