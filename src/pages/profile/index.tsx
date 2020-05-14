@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Button, H1 } from 'components'
+import { Button, H1, P } from 'components'
 import { useUser } from 'hooks'
 
 import Content from './content'
@@ -23,7 +23,7 @@ const ProfilePage: FC = () => {
       {user ? (
         <Content user={user} />
       ) : (
-        <p>Could not find user with ID: {userId}</p>
+        <P>Could not find user with ID: {userId}</P>
       )}
       <Button onClick={goBack}>Back</Button>
     </>

@@ -6,19 +6,26 @@ import React, {
   useState,
 } from 'react'
 
-import { useUser } from 'hooks'
-import { auth } from 'services'
+import { auth, db } from 'services'
 import { User } from 'typings'
 
 const CurrentUserContext = createContext<User | undefined>(undefined)
 
 export const CurrentUserProvider: FC = ({ children }) => {
-  const [userId, setUserId] = useState<string | undefined>(undefined)
-  const { user } = useUser(userId)
+  const [user, setUser] = useState<User | undefined>(undefined)
 
-  auth.onAuthStateChanged((u) => setUserId(u?.uid))
-
-  useEffect(() => {}, [userId])
+  useEffect(() => {
+    const unsuscribe = auth.onAuthStateChanged(async (u) => {
+      if (u?.uid) {
+        const doc = await db.collection('users').doc(u?.uid).get()
+        if (doc.exists) return setUser({ ...doc.data(), id: doc.id } as User)
+      }
+      return setUser(undefined)
+    })
+    return () => {
+      unsuscribe()
+    }
+  }, [])
 
   return (
     <CurrentUserContext.Provider value={user}>

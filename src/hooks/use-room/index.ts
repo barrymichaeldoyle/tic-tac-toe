@@ -19,7 +19,7 @@ const useRoom = (): Output => {
       .collection('rooms')
       .doc(roomId)
       .onSnapshot((doc) => {
-        if (doc.exists) setRoom(doc.data() as Room)
+        if (doc.exists) setRoom({ ...doc.data(), id: doc.id } as Room)
         else console.log('Room Not Found')
         if (isFetching) setIsFetching(false)
       })

@@ -1,7 +1,10 @@
 import React, { FC } from 'react'
-import { H1, H3 } from 'components'
 import { useHistory } from 'react-router-dom'
+
+import { H1 } from 'components'
 import { useRooms } from 'hooks'
+
+import { Container } from './styles'
 
 const Room: FC = () => {
   const { isFetching, rooms } = useRooms()
@@ -11,17 +14,15 @@ const Room: FC = () => {
   if (rooms.length === 0) return <H1>No Rooms Found</H1>
 
   return (
-    <div>
+    <>
       {rooms.map((
         room // REMEMBER TO MAKE THIS INTO IT'S OWN COMPONENT
       ) => (
-        <div key={room.id} onClick={() => history.push(`/r/${room.id}`)}>
-          <H3>
-            {room.id} = {room.owner}
-          </H3>
-        </div>
+        <Container key={room.id} onClick={() => history.push(`/r/${room.id}`)}>
+          {room.id} = {room.owner}
+        </Container>
       ))}
-    </div>
+    </>
   )
 }
 

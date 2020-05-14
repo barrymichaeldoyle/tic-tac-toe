@@ -60,9 +60,9 @@ const SignupPage: FC = () => {
         .set({
           displayName: response.user.email?.split('@')[0] ?? '<UNKNOWN>',
         })
+      history.push('/')
     } catch (ex) {
       setFirebaseErr(ex.message)
-    } finally {
       setIsSigningUp(false)
     }
   }

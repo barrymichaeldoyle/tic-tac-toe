@@ -2,18 +2,14 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { Button, H1 } from 'components'
+import { useClearBoard, useRoom } from 'hooks'
 
-import PlayerDisplay from './playerDisplay'
-
-import { useClearBoard, useCurrentUser, useRoom } from 'hooks'
-
-import Platform from './platform'
-
+import Board from './board'
+import PlayerDisplay from './player-display'
 import { Container } from './styles'
 
 const Room = () => {
   const { clearBoard, isClearing } = useClearBoard()
-  const currentUser = useCurrentUser()
   const history = useHistory()
   const { isFetching, room } = useRoom()
 
@@ -30,14 +26,12 @@ const Room = () => {
     history.push('/')
   }
 
-  console.log({ currentUser })
-
   return (
     <Container>
-      {currentUser && <p>Logged in as {currentUser.displayName}</p>}
       <H1>{message}</H1>
-      <Platform />
-      <PlayerDisplay />
+      <Board />
+      <PlayerDisplay player="X" />
+      <PlayerDisplay player="O" />
       <Button disabled={isClearing} onClick={handleClear}>
         Clear{isClearing ? 'ing' : ''} Board
       </Button>

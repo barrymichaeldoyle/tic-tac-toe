@@ -7,17 +7,16 @@ const Logout: FC = () => {
   const [isLoggingOut, setIsLoggingOut] = useState(false)
   const [firebaseErr, setFirebaseErr] = useState<string | undefined>(undefined)
 
-  function handleClick() {
+  async function handleClick() {
     setIsLoggingOut(true)
     setFirebaseErr(undefined)
 
-    auth
-      .signOut()
-      .then(() => setIsLoggingOut(false))
-      .catch((err) => {
-        setFirebaseErr(err.message)
-        setIsLoggingOut(false)
-      })
+    try {
+      await auth.signOut()
+    } catch (err) {
+      setFirebaseErr(err.message)
+      setIsLoggingOut(false)
+    }
   }
 
   return (

@@ -27,9 +27,10 @@ const useCreateRoom = (): Output => {
     let output: string | undefined = undefined
 
     try {
-      const userDetails = await db.collection('users').doc(user.id).get()
-      if (userDetails.data()?.roomId) {
-        return (output = userDetails.data()?.roomId)
+      // TODO: if use does have roomId and room doesn't exist, create room with that room Id
+      if (user.roomId) {
+        // fetch room by id to see if it exists
+        return (output = user.roomId)
       }
 
       let newIdGenerated = false
