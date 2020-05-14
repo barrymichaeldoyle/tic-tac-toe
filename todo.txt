@@ -5,3 +5,5 @@ Make sure user can't claim both X and O spots
 Make useSearchParams hook
 In useCreateRoom, if user already has roomID, check if the room exists, if not, create it.
 Login, fix if search params aren't there
+
+Style stuff.....
