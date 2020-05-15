@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useState } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import React, { FC, useCallback, useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 
 import { Button, Error, H1, Field } from 'components'
-import { validateEmail, getSearchParams } from 'helpers'
-import { useCurrentUser } from 'hooks'
+import { validateEmail } from 'helpers'
+import { useCurrentUser, useSearchParams } from 'hooks'
 import { auth } from 'services'
 
 const LoginPage: FC = () => {
@@ -16,13 +16,17 @@ const LoginPage: FC = () => {
   const [firebaseErr, setFirebaseErr] = useState<string | undefined>()
   const [isLoggingIn, setIsLoggingIn] = useState(false)
 
-  // Combine this into it's own Hook
-  const { search } = useLocation()
-  const { redirect, player } = getSearchParams(search)
+  const { redirect, player } = useSearchParams()
+
+  const performRedirect = useCallback(() => {
+    if (!redirect) return history.push('/')
+    if (!player) return history.push(`/${redirect}`)
+    return history.push(`/${redirect}?player=${player}`)
+  }, [history, player, redirect])
 
   useEffect(() => {
-    if (user) history.push('/')
-  }, [history, user])
+    if (user) performRedirect()
+  }, [performRedirect, user])
 
   useEffect(() => {
     setEmailErr(undefined)
@@ -38,9 +42,7 @@ const LoginPage: FC = () => {
 
     try {
       await auth.signInWithEmailAndPassword(email, password)
-      // TODO: if redirect doesn't exist, just go to /
-      // If  player doesn't exist go to /${redirect}
-      return history.push(`/${redirect}?player=${player}`)
+      performRedirect()
     } catch (err) {
       setFirebaseErr(err.message)
       setIsLoggingIn(false)

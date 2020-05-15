@@ -1,11 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { db } from 'services'
-
-interface RoomItem {
-  id: string
-  owner: string
-}
+import { RoomItem } from 'typings'
 
 interface Output {
   isFetching: boolean

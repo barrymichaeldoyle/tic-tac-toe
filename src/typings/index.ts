@@ -6,6 +6,7 @@ export interface Room {
   id: string
   isGameDone: boolean
   message: string
+  owner: string
   playerOId?: string
   playerTurn: SYMBOL
   playerXId?: string
@@ -13,8 +14,13 @@ export interface Room {
   turnNumber: number
 }
 
+export interface RoomItem {
+  id: string
+  owner: string
+}
+
 export interface User {
   displayName: string
   id: string
-  roomId: string
+  roomId?: string
 }

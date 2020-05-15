@@ -1,9 +1,6 @@
 KEVIN!!!!!!
 
-pages/rooms cleanup (change rooms to room-list, then mvoe room into it's own component) *
-Make sure user can't claim both X and O spots ?
-Make useSearchParams hook ?
-In useCreateRoom, if user already has roomID, check if the room exists, if not, create it.
-Login, fix if search params aren't there ?
+Leave a Spot
+Kick Player off spot
 
 Style stuff.....

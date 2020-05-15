@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Button, H1 } from 'components'
-import Room from './room-list'
+import RoomList from './room-list'
 import { useHistory } from 'react-router-dom'
 
 // TODO Notes:
@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom'
 // to the useRooms hook filter via firestore.
 // BONUS: Implement Highlighter
 
-const Rooms: FC = () => {
+const RoomsPage: FC = () => {
   const history = useHistory()
 
   function handleClick() {
@@ -20,10 +20,10 @@ const Rooms: FC = () => {
     <>
       <H1>Rooms</H1>
       {/* TODO: Create A Filter Component */}
-      <Room />
+      <RoomList />
       <Button onClick={handleClick}>Back To Home</Button>
     </>
   )
 }
 
-export default Rooms
+export default RoomsPage

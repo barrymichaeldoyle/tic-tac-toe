@@ -1,10 +1,16 @@
-import React, { FC, useEffect, useMemo } from 'react'
+import React, { FC, MouseEvent, useCallback, useEffect, useMemo } from 'react'
 import { H1 } from 'components'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import { P } from 'components'
-import { getSearchParams } from 'helpers'
-import { useCurrentUser, useJoinRoom, useRoom, useUser } from 'hooks'
+import {
+  useCurrentUser,
+  useJoinRoom,
+  useLeaveRoom,
+  useRoom,
+  useSearchParams,
+  useUser,
+} from 'hooks'
 import { SYMBOL } from 'typings'
 
 interface IProps {
@@ -15,11 +21,9 @@ const PlayerDisplay: FC<IProps> = ({ player }) => {
   const currentUser = useCurrentUser()
   const history = useHistory()
   const { isJoining, joinRoom } = useJoinRoom()
+  const { isLeaving, leaveRoom } = useLeaveRoom()
   const { isFetching, room } = useRoom()
-
-  // Combine this into it's own Hook
-  const { search } = useLocation()
-  const { player: playerSearch } = getSearchParams(search)
+  const { player: playerSearch } = useSearchParams()
 
   const playerId = useMemo(
     () => (player === 'X' ? room?.playerXId : room?.playerOId),
@@ -33,6 +37,29 @@ const PlayerDisplay: FC<IProps> = ({ player }) => {
       joinRoom(player, currentUser.id)
   }, [isFetching, room, user, currentUser, playerSearch, player, joinRoom])
 
+  const renderRemoveUser = useCallback(() => {
+    function handleClick(
+      e: MouseEvent<HTMLSpanElement, globalThis.MouseEvent>
+    ) {
+      e.stopPropagation()
+      leaveRoom(player)
+    }
+
+    if (currentUser?.id === playerId || currentUser?.id === room?.owner)
+      return (
+        <>
+          &nbsp;
+          <span onClick={handleClick}>
+            {currentUser?.id === playerId
+              ? `Leav${isLeaving ? 'ing' : 'e'}`
+              : `Kick${isLeaving ? 'ing' : ''}`}
+          </span>
+        </>
+      )
+
+    return null
+  }, [currentUser, isLeaving, leaveRoom, player, playerId, room])
+
   if (isFetching) return <H1>Loading Room...</H1>
   if (!room) return <H1>Room Not Found</H1>
 
@@ -42,6 +69,7 @@ const PlayerDisplay: FC<IProps> = ({ player }) => {
       {user ? (
         <span onClick={() => history.push(`/u/${playerId}`)}>
           {user.displayName}
+          {renderRemoveUser()}
         </span>
       ) : currentUser ? (
         <span onClick={() => joinRoom(player, currentUser.id)}>

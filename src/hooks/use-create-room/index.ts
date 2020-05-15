@@ -2,7 +2,6 @@ import { useState } from 'react'
 
 import { useCurrentUser } from 'hooks'
 import { db } from 'services'
-import Room from 'pages/room'
 
 function genId(): string {
   let result = ''
@@ -25,28 +24,29 @@ const useCreateRoom = (): Output => {
     if (!user) return undefined
 
     setIsCreatingRoom(true)
-    let output: string | undefined = undefined
+    let roomId: string | undefined = user.roomId
 
     try {
-      // TODO: if use does have roomId and room doesn't exist, create room with that room Id
-      if (user.roomId) {
-        // fetch room by id to see if it exists
-        return (output = user.roomId)
-      }
+      if (roomId) {
+        const foundUserRoom = await db.collection('rooms').doc(roomId).get()
+        if (foundUserRoom.exists) return roomId
+      } else {
+        let newIdGenerated = false
+        roomId = genId()
 
-      let newIdGenerated = false
-      let randomRoomId = genId()
+        while (!newIdGenerated) {
+          const foundRoom = await db.collection('rooms').doc(roomId).get()
+          if (foundRoom.exists) roomId = genId()
+          else newIdGenerated = true
+        }
 
-      while (!newIdGenerated) {
-        const foundRoom = await db.collection('rooms').doc(randomRoomId).get()
-        if (foundRoom.exists) randomRoomId = genId()
-        else newIdGenerated = true
+        await db.collection('users').doc(user.id).update({ roomId })
       }
 
       const startingTurn = Math.round(Math.random()) ? 'X' : 'O'
       await db
         .collection('rooms')
-        .doc(randomRoomId)
+        .doc(roomId)
         .set({
           board: [null, null, null, null, null, null, null, null, null],
           isGameDone: false,
@@ -56,14 +56,11 @@ const useCreateRoom = (): Output => {
           startingTurn: startingTurn,
           turnNumber: 1,
         })
-      await db.collection('users').doc(user.id).update({ roomId: randomRoomId })
-
-      output = randomRoomId
     } catch (err) {
       console.error(err)
     } finally {
       setIsCreatingRoom(false)
-      return output
+      return roomId
     }
   }
 

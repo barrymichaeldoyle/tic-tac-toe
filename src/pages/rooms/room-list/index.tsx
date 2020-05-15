@@ -12,7 +12,9 @@ const RoomList: FC = () => {
 
   return (
     <>
-      <Room />
+      {rooms.map((room) => (
+        <Room key={room.id} {...room} />
+      ))}
     </>
   )
 }
