@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { Button, H1 } from 'components'
-import Room from './room'
+import Room from './room-list'
 import { useHistory } from 'react-router-dom'
 
 // TODO Notes:

@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import { useCurrentUser } from 'hooks'
 import { db } from 'services'
+import Room from 'pages/room'
 
 function genId(): string {
   let result = ''

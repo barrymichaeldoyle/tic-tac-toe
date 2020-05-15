@@ -1,17 +1,13 @@
 import React, { FC } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import { H1 } from 'components'
 import { useRooms } from 'hooks'
 
-import { Container } from './styles'
+import { Container } from '../styles'
 
 const Room: FC = () => {
-  const { isFetching, rooms } = useRooms()
+  const { rooms } = useRooms()
   const history = useHistory()
-
-  if (isFetching) return <H1>Fetching Rooms...</H1>
-  if (rooms.length === 0) return <H1>No Rooms Found</H1>
 
   return (
     <>
